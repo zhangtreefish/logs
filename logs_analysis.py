@@ -6,6 +6,7 @@ import psycopg2
 conn = psycopg2.connect("dbname='news'")
 cur = conn.cursor()
 
+
 def find_popular_articles():
     try:
         popular_article_query = '''
@@ -22,8 +23,9 @@ def find_popular_articles():
         for row in rows:
             print('{} -- {} views'.format(row[0], row[2]))
 
-    except:
+    except BaseException:
         print "I am unable to find_popular_articles"
+
 
 find_popular_articles()
 
@@ -33,7 +35,8 @@ def find_popular_authors():
         popular_author_query = '''
         SELECT authors.name, authors.id AS aid, count(*) AS num
         FROM articles, authors, log
-        WHERE articles.author=authors.id AND log.path LIKE ('/article/' || articles.slug)
+        WHERE articles.author=authors.id
+            AND log.path LIKE ('/article/' || articles.slug)
         GROUP BY aid
         ORDER BY num DESC
         LIMIT 3;
@@ -43,8 +46,9 @@ def find_popular_authors():
         print("Top 3 most popular authors!")
         for row in rows:
             print('{} -- {} views'.format(row[0], row[2]))
-    except:
+    except BaseException:
         print "I am unable to find_popular_authors"
+
 
 find_popular_authors()
 
@@ -60,12 +64,10 @@ def find_high_error_dates():
             SELECT d, n
             FROM day_view
             WHERE status LIKE '404 NOT FOUND';
-
         CREATE VIEW total_view AS
             SELECT d, sum(n) AS t
             FROM day_view
             GROUP BY d;
-
         SELECT b.d, b.n/t.t AS r
         FROM bad_view b, total_view t
         WHERE b.d = t.d AND b.n/t.t > 0.01;
@@ -75,8 +77,9 @@ def find_high_error_dates():
         print("high_error_dates:")
         for row in rows:
             print('{} -- {:.0%} errors'.format(row[0], row[1]))
-    except:
+    except BaseException:
         print "I am unable to find_high_error_dates"
+
 
 find_high_error_dates()
 
