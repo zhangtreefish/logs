@@ -5,7 +5,7 @@ adaptor psycopg2. The program outputs the most popular authors and articles and 
 when http error exceed certain limit.
 ## How to run
 1. git clone this repository
-2. cd <to the directory where the Vagrantfile is>:
+2. cd (to the directory where the Vagrantfile is):
 ```sh
 vagrant up (Vagrantfile not included)
 vagrant ssh
