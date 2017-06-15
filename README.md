@@ -2,18 +2,18 @@
 ## A Description of the Program's Design
 The purpose of this program is to query a PostgreSQL database called news using Python
 adaptor psycopg2. The program outputs the most popular authors and articles and dates
-when http error exceed certain limit.
+when http errors exceed certain limit.
 ## How to run
 1. git clone this repository
 2. cd (to the directory where the Vagrantfile is):
 ```sh
-vagrant up (Vagrantfile not included)
+vagrant up
 vagrant ssh
 ```
 4. inside vagrant:~$:
 ```sh
 cd <to where logs_analysis and newsdata.sql files are>
-psql -d news newsdata.sql (newsdata.sql file not included)
+psql -d news newsdata.sql (unzipped from newsdata.zip)
 psql news
 inside =>news:
 	CREATE VIEW bad_view AS
