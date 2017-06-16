@@ -45,8 +45,18 @@ def find_popular_authors(cur):
 def find_high_error_dates(cur):
     try:
         greater_error_dates_query = '''
+        WITH bad_vie AS (
+            SELECT date_trunc('day', time) AS date, count(*) AS bad_count
+            FROM log
+            WHERE status LIKE '404 NOT FOUND'
+            GROUP BY date
+        ), total_vie AS (
+            SELECT date_trunc('day', time) AS date, count(*) AS total_count
+            FROM log
+            GROUP BY date
+        )
         SELECT to_char(b.date, 'FMMonth dd, yyyy'), 1.0 * b.bad_count/t.total_count
-        FROM bad_view b, total_view t
+        FROM bad_vie b, total_vie t
         WHERE b.date = t.date AND 1.0 * b.bad_count/t.total_count > 0.01;
         '''
         cur.execute(greater_error_dates_query)
